@@ -54,7 +54,11 @@ app.get('/', (req, res) => {
 
 app.get('/words', async (req, res, next) => {
   try {
-    const sql = 'select * from word';
+    const querySelected = req.query.selected.map(e => {
+      return `'DAY ${Number(e) + 1}'`;
+    });
+    const sql = `select * from word where day in (${querySelected})`;
+
     connection.query(sql, function (err, topics, fields) {
       if (err) {
         console.log(err);

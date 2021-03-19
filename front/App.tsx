@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import type { Node } from 'react';
 import {
@@ -33,7 +33,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 const App: () => Node = () => {
-  const selected: number[] = [];
+  const [selected, setSelcted] = useState<number[]>([]);
   useEffect(() => {
     getButtons();
   }, []);
@@ -43,15 +43,38 @@ const App: () => Node = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const onPressButton = (index: number) => {
+    const findIndex = selected.findIndex(e => e === index);
+    if (findIndex > -1) {
+      const copySelected = [...selected];
+      copySelected.splice(findIndex, 1)
+      setSelcted(copySelected);
+    } else {
+      selected.push(index);
+      setSelcted([...selected]);
+    }
+  }
+
   const getButtons = () => {
     const buttonArray = new Array(61).fill('').map((e, i) => {
       return (
         <TouchableOpacity
-          style={{ backgroundColor: selected.includes(i) ? 'black' : 'white', flex: 1, justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderRadius: 10, minWidth: 100, maxWidth: 100, height: 40, borderWidth: 1 }}
-          onPress={() => {
-            selected.includes(i) ? selected.filter(e => e === i) : selected.push(i);
-            getWords();
+          key={e + i}
+          style={{
+            backgroundColor: selected.includes(i) ? 'black' : 'white',
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderColor: 'black',
+            borderRadius: 10,
+            minWidth: 100,
+            maxWidth: 100,
+            height: 40,
+            borderWidth: 1,
+            marginVertical: 10,
+            marginHorizontal: 5,
           }}
+          onPress={() => { onPressButton(i) }}
         >
           <Text style={{ color: selected.includes(i) ? 'white' : 'black', }}>{`DAY ${i + 1}`}</Text>
         </TouchableOpacity>
@@ -60,39 +83,35 @@ const App: () => Node = () => {
     return buttonArray;
   };
 
-  const getWords = async () => {
+  const getWords = async (selected: number[]) => {
     try {
-      const respose = await axios.get('http://localhost:3603/words', {
+      const response = await axios.get('http://localhost:3603/words', {
+        params: {
+          selected: selected,
+        },
       });
-      console.log(respose.data.words);
     } catch (error) {
       console.log('error:', error);
     }
-    // .then(function (response) {
-    //   console.log(response);
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // })
-    // .then(function () {
-    //   // always executed
-    // });
   }
 
+  const onPressStart = async () => {
+    const words = await getWords(selected);
+  }
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
         <Text onPress={getButtons}>MEW</Text>
-        <View>
+        <TouchableOpacity onPress={onPressStart}>
           <Image
             source={{
               uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
             }}
             style={{ width: 200, height: 200 }}
           />
-        </View>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', width: 400, flexWrap: 'wrap', justifyContent: 'center' }}>
           {getButtons()}
         </View>
       </ScrollView>
