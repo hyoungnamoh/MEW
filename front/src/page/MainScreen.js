@@ -1,7 +1,8 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const Home = () => {
+const MainScreen = ({ route, navigation }) => {
   const [selected, setSelcted] = useState([]);
   useEffect(() => {
     getButtons();
@@ -54,18 +55,22 @@ const Home = () => {
           selected: selected,
         },
       });
+      return response.data;
     } catch (error) {
       console.log('error:', error);
     }
   }
 
-  const onPressStart = async () => {
-    const words = await getWords(selected);
+  const onPressMEW = async () => {
+    const data = await getWords(selected);
+    navigation.push('TestScreen', {
+      data: data,
+    })
   }
   return (
     <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
       <Text onPress={getButtons}>MEW</Text>
-      <TouchableOpacity onPress={onPressStart}>
+      <TouchableOpacity onPress={onPressMEW}>
         <Image
           source={{
             uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
@@ -99,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default MainScreen;

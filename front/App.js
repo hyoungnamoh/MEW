@@ -34,7 +34,8 @@ import {
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from './src/page/Home';
+import MainScreen from './src/page/MainScreen';
+import TestScreen from './src/page/TestScreen';
 
 
 // In App.js in a new project
@@ -74,7 +75,7 @@ function CreatePostScreen({ navigation, route }) {
         title="Done"
         onPress={() => {
           // Pass params back to home screen
-          navigation.navigate('Home', { post: postText });
+          navigation.navigate('MainScreen', { post: postText });
         }}
       />
     </>
@@ -98,7 +99,7 @@ function DetailsScreen({ route, navigation }) {
           })
         }
       />
-      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+      <Button title="Go to MainScreen" onPress={() => navigation.navigate('MainScreen')} />
       <Button title="Go back" onPress={() => navigation.goBack()} />
     </View>
 
@@ -119,9 +120,13 @@ const App = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NavigationContainer initialRouteName="Home">
-        <Stack.Navigator>
-          <Stack.Screen
+      <NavigationContainer initialRouteName="MainScreen">
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {/* <Stack.Screen
             name="Home"
             component={HomeScreen}
           />
@@ -132,10 +137,14 @@ const App = () => {
           <Stack.Screen
             name="CreatePost"
             component={CreatePostScreen}
+          /> */}
+          <Stack.Screen
+            name="MainScreen"
+            component={MainScreen}
           />
           <Stack.Screen
-            name="Home2"
-            component={Home}
+            name="TestScreen"
+            component={TestScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>
