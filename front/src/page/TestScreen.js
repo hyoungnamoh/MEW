@@ -1,44 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-const shuffle = (array) => {
-  let j, x, i;
-  for (i = array.length; i; i -= 1) {
-    j = Math.floor(Math.random() * i); x = array[i - 1];
-    array[i - 1] = array[j];
-    array[j] = x;
-  }
-  return array;
-}
-
 const TestScreen = ({ route }) => {
   const [testItems, setTestItems] = useState([]);
-  const [engWods, setEngWords] = useState(shuffle(route.params.data.words).map(e => e.eng));
-  const [korWods, setKorWords] = useState(shuffle(route.params.data.words).map(e => e.kor));
+  // const [engWods, setEngWords] = useState(shuffle(route.params.data.words).map(e => e.eng));
+  // const [korWods, setKorWords] = useState(shuffle(route.params.data.words).map(e => e.kor));
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    const shuffledEngWords = shuffle(route.params.data.words).map(e => e.eng);
-    const shuffledKorWords = shuffle(route.params.data.words).map(e => e.kor);
+    const shuffleWords = shuffle();
+    const shuffledEngWords = [...shuffleWords].map(e => e.eng);
+    const shuffledKorWords = [...shuffleWords].map(e => e.kor);
     const shuffledWords = [];
+    const copyShuffledEngWords = [...shuffledEngWords];
+    const copyShuffledKorWords = [...shuffledKorWords];
     for (let index = 0; index < Math.ceil(shuffledEngWords.length / 10); index++) {
-      const copyShuffledEngWords = [...shuffledEngWords];
-      const copyShuffledKorWords = [...shuffledKorWords];
-      shuffledWords.push(copyShuffledEngWords.splice(index, 10));
-      shuffledWords.push(copyShuffledKorWords.splice(index, 10));
+      shuffledWords.push(copyShuffledEngWords.splice(0, 10));
+      shuffledWords.push(copyShuffledKorWords.splice(0, 10));
     }
-    // shuffledEngWords.map((e, i) => {
-    //   const copyShuffledEngWords = [...shuffledEngWords];
-    //   const copyShuffledKorWords = [...shuffledKorWords];
-    //   shuffledWords.push(copyShuffledEngWords.splice());
-    //   shuffledWords.push(shuffledKorWords[i]);
-    // })
     setTestItems(shuffledWords);
-    console.log(shuffledWords);
   }, []);
 
+  const shuffle = () => {
+    const shuffleArray = [];
+    while (route.params.data.words.length > 0) {
+      shuffleArray.push(route.params.data.words.splice(Math.floor(Math.random() * route.params.data.words.length), 1)[0]);
+    }
+    return shuffleArray;
+  }
+
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: 'blue' }} contentContainerStyle={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
       <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
         {
           testItems[currentPage - 1]?.map(e => {
@@ -64,7 +56,7 @@ const TestScreen = ({ route }) => {
           })
         }
       </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      <View style={{}}>
         {
           currentPage > 1 &&
           <TouchableOpacity
@@ -80,6 +72,8 @@ const TestScreen = ({ route }) => {
               borderWidth: 1,
               marginVertical: 10,
               marginHorizontal: 5,
+              position: 'absolute',
+              bottom: 0,
             }}
             onPress={() => { setCurrentPage(currentPage - 1) }}
           >
@@ -101,6 +95,9 @@ const TestScreen = ({ route }) => {
               borderWidth: 1,
               marginVertical: 10,
               marginHorizontal: 5,
+              position: 'absolute',
+              right: 0,
+              bottom: 0,
             }}
             onPress={() => { setCurrentPage(currentPage + 1) }}
           >

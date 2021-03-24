@@ -53,6 +53,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/words', async (req, res, next) => {
+  console.log('hi');
   try {
     const querySelected = req.query.selected.map(e => {
       return `'DAY ${Number(e) + 1}'`;
