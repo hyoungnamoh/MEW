@@ -7,8 +7,8 @@ const TestScreen = ({ route, navigation }) => {
   const [notKnowList, setNotKnowList] = useState([]);
 
   useEffect(() => {
-    const shuffledEngWords = shuffle().map(e => e.eng);
-    const shuffledKorWords = shuffle().map(e => e.kor);
+    const shuffledEngWords = shuffle().map(e => { return { word: e.eng, answer: e.kor } });
+    const shuffledKorWords = shuffle().map(e => { return { word: e.kor, answer: e.eng } });
     const shuffledWords = [];
     const copyShuffledEngWords = [...shuffledEngWords];
     const copyShuffledKorWords = [...shuffledKorWords];
@@ -45,17 +45,13 @@ const TestScreen = ({ route, navigation }) => {
       );
     });
     if (await AsyncAlert()) {
-      let passValue = [];
-      const arrayItems = testItems.map(e => {
+      const passValue = testItems.map(e => {
         return e.map(e2 => {
-          if (notKnowList.includes(e2)) {
-            return { word: e2, notKnow: true };
+          if (notKnowList.includes(e2.word)) {
+            return { word: e2.word, notKnow: true, answer: e2.answer };
           }
-          return { word: e2 };
+          return { word: e2.word, answer: e2.answer };
         });
-      });
-      arrayItems.map(e => {
-        passValue = passValue.concat(e);
       });
       navigation.push('TestCompleteScreen', {
         words: passValue,
@@ -65,12 +61,13 @@ const TestScreen = ({ route, navigation }) => {
 
   const onPressWordButton = (e) => {
     const copyNotKnowList = [...notKnowList];
-    if (copyNotKnowList.includes(e)) {
+    if (copyNotKnowList.find(item => item === e.word)) {
       const findIndex = copyNotKnowList.findIndex(item => item === e);
       copyNotKnowList.splice(findIndex, 1);
     } else {
-      copyNotKnowList.push(e);
+      copyNotKnowList.push(e.word);
     }
+    console.log('hi', copyNotKnowList);
     setNotKnowList(copyNotKnowList);
   }
 
@@ -78,7 +75,7 @@ const TestScreen = ({ route, navigation }) => {
     <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
       <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
         {
-          testItems[currentPage - 1]?.map(e => {
+          testItems[currentPage - 1]?.map((e, i) => {
             return (
               <TouchableOpacity
                 onPress={() => onPressWordButton(e)}
@@ -94,10 +91,10 @@ const TestScreen = ({ route, navigation }) => {
                   borderWidth: 1,
                   marginVertical: 10,
                   marginHorizontal: 5,
-                  backgroundColor: notKnowList.includes(e) ? 'yellow' : '#ffffff',
+                  backgroundColor: notKnowList.find(item => item === e.word) ? 'yellow' : '#ffffff',
                 }}
               >
-                <Text style={{ fontWeight: 'bold' }}>{e}</Text>
+                <Text style={{ fontWeight: 'bold' }}>{e.word}</Text>
               </TouchableOpacity>
             )
           })

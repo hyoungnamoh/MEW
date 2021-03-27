@@ -1,12 +1,21 @@
+import { useFocusEffect } from "@react-navigation/core";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const MainScreen = ({ route, navigation }) => {
   const [selected, setSelcted] = useState([]);
   useEffect(() => {
     getButtons();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setSelcted([]);
+      return () => {
+      };
+    }, [])
+  );
 
   const getButtons = () => {
     const buttonArray = new Array(61).fill('').map((e, i) => {
