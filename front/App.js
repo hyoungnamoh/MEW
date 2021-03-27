@@ -36,6 +36,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainScreen from './src/page/MainScreen';
 import TestScreen from './src/page/TestScreen';
+import TestCompleteScreen from './src/page/TestCompleteScreen';
 
 
 // In App.js in a new project
@@ -145,6 +146,10 @@ const App = () => {
           <Stack.Screen
             name="TestScreen"
             component={TestScreen}
+          />
+          <Stack.Screen
+            name="TestCompleteScreen"
+            component={TestCompleteScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>
