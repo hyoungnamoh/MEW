@@ -59,7 +59,7 @@ const MainScreen = ({ route, navigation }) => {
 
   const getWords = async (selected) => {
     try {
-      const response = await axios.get('http://192.168.219.105:3603/words', {
+      const response = await axios.get('http://localhost:3603/words', {
         params: {
           selected: selected,
         },
@@ -72,8 +72,12 @@ const MainScreen = ({ route, navigation }) => {
 
   const onPressMEW = async () => {
     const data = await getWords(selected);
-    navigation.push('TestScreen', {
-      data: data,
+    if (!data) {
+      return Alert.alert('시험부터 선택하시죠 ㅡㅅㅡ');
+    }
+    navigation.push('SelectQuestionsCountScreen', {
+      data,
+      selected,
     })
   }
   return (
