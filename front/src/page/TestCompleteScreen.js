@@ -53,6 +53,7 @@ const TestCompleteScreen = ({ route, navigation }) => {
                 }}
               >
                 <Text style={{ fontWeight: 'bold' }}>{e.word}</Text>
+                <Text style={{ fontWeight: 'bold', color: 'red' }}>{e.answer}</Text>
               </TouchableOpacity>
             )
           })
