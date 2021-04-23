@@ -23,13 +23,15 @@ const TestScreen = ({ route, navigation }) => {
     const propWords = [...route.params.data.words];
     const propCount = route.params.count;
     const propSelected = route.params.selected;
-    console.log(propSelected);
     const shuffleArray = [];
+    console.log(propWords);
     if (propCount) {
-      const wordPerDay = propWords.map((e, i) => {
-        return propSelected.filter(e2 => { console.log(e.day, `DAY ${e2}`); return e.day === `DAY ${e2}` });
+      const 머시기 = propSelected.map(selected => {
+        return propWords.filter(word => {
+          return `DAY ${selected + 1}` === word.day;
+        })
       });
-      console.log(wordPerDay);
+      console.log(머시기);
     } else {
       while (propWords.length > 0) {
         shuffleArray.push(propWords.splice(Math.floor(Math.random() * propWords.length), 1)[0]);
@@ -78,7 +80,6 @@ const TestScreen = ({ route, navigation }) => {
     } else {
       copyNotKnowList.push(e.word);
     }
-    console.log('hi', copyNotKnowList);
     setNotKnowList(copyNotKnowList);
   }
 
