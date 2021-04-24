@@ -59,7 +59,7 @@ const MainScreen = ({ route, navigation }) => {
 
   const getWords = async (selected) => {
     try {
-      const response = await axios.get('http://localhost:3603/words', {
+      const response = await axios.get('http://192.168.219.103:3603/words', {
         params: {
           selected: selected,
         },

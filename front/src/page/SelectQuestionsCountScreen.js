@@ -1,9 +1,14 @@
-import { Text, TouchableOpacity, View } from "react-native";
-import React from 'react';
+import { Alert, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect } from 'react';
 
 const SelectQuestionsCountScreen = ({ route, navigation }) => {
-  console.log(route.params.data);
+  useEffect(() => {
+  })
   const onPressStart = (count) => {
+    if (count > route.params.data.words.length) {
+      Alert.alert('문항수가 부족해요. 문제를 더 추가해줘요..;');
+      return;
+    }
     navigation.push('TestScreen', {
       data: route.params.data,
       count,
@@ -56,7 +61,7 @@ const SelectQuestionsCountScreen = ({ route, navigation }) => {
           marginVertical: 10,
           marginHorizontal: 5,
         }}
-        onPress={() => { onPressStart(50) }}
+        onPress={() => { onPressStart(100) }}
       >
         <Text>100문항</Text>
       </TouchableOpacity>

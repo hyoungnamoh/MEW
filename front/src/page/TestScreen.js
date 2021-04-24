@@ -24,14 +24,16 @@ const TestScreen = ({ route, navigation }) => {
     const propCount = route.params.count;
     const propSelected = route.params.selected;
     const shuffleArray = [];
-    console.log(propWords);
     if (propCount) {
-      const 머시기 = propSelected.map(selected => {
-        return propWords.filter(word => {
-          return `DAY ${selected + 1}` === word.day;
-        })
-      });
-      console.log(머시기);
+      // const dayWords = propSelected.map(selected => {
+      //   return propWords.filter(word => {
+      //     return `DAY ${selected + 1}` === word.day;
+      //   })
+      // });
+      for (let i = 0; i < propCount; i++) {
+        shuffleArray.push(propWords.splice(Math.floor(Math.random() * propWords.length), 1)[0]);
+      }
+      console.log(shuffleArray);
     } else {
       while (propWords.length > 0) {
         shuffleArray.push(propWords.splice(Math.floor(Math.random() * propWords.length), 1)[0]);
