@@ -66,14 +66,18 @@ const MainScreen = ({ route, navigation }) => {
       });
       return response.data;
     } catch (error) {
-      console.log('error:', error);
+      console.log('getWords:', error);
     }
   }
 
   const onPressMEW = async () => {
     const data = await getWords(selected);
-    navigation.push('TestScreen', {
-      data: data,
+    if (!data) {
+      return Alert.alert('시험부터 선택하시죠 ㅡㅅㅡ');
+    }
+    navigation.push('SelectQuestionsCountScreen', {
+      data,
+      selected,
     })
   }
   return (

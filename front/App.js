@@ -37,6 +37,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import MainScreen from './src/page/MainScreen';
 import TestScreen from './src/page/TestScreen';
 import TestCompleteScreen from './src/page/TestCompleteScreen';
+import SelectQuestionsCountScreen from './src/page/SelectQuestionsCountScreen';
 
 
 // In App.js in a new project
@@ -127,21 +128,13 @@ const App = () => {
             headerShown: false,
           }}
         >
-          {/* <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-          />
-          <Stack.Screen
-            name="Details"
-            component={DetailsScreen}
-          />
-          <Stack.Screen
-            name="CreatePost"
-            component={CreatePostScreen}
-          /> */}
           <Stack.Screen
             name="MainScreen"
             component={MainScreen}
+          />
+          <Stack.Screen
+            name="SelectQuestionsCountScreen"
+            component={SelectQuestionsCountScreen}
           />
           <Stack.Screen
             name="TestScreen"

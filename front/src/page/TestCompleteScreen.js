@@ -6,7 +6,6 @@ const TestCompleteScreen = ({ route, navigation }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [notKnowList, setNotKnowList] = useState([]);
   useEffect(() => {
-    console.log(words);
   })
 
   const testComplete = async () => {

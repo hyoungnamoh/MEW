@@ -21,10 +21,25 @@ const TestScreen = ({ route, navigation }) => {
 
   const shuffle = () => {
     const propWords = [...route.params.data.words];
+    const propCount = route.params.count;
+    const propSelected = route.params.selected;
     const shuffleArray = [];
-    while (propWords.length > 0) {
-      shuffleArray.push(propWords.splice(Math.floor(Math.random() * propWords.length), 1)[0]);
+    if (propCount) {
+      // const dayWords = propSelected.map(selected => {
+      //   return propWords.filter(word => {
+      //     return `DAY ${selected + 1}` === word.day;
+      //   })
+      // });
+      for (let i = 0; i < propCount; i++) {
+        shuffleArray.push(propWords.splice(Math.floor(Math.random() * propWords.length), 1)[0]);
+      }
+      console.log(shuffleArray);
+    } else {
+      while (propWords.length > 0) {
+        shuffleArray.push(propWords.splice(Math.floor(Math.random() * propWords.length), 1)[0]);
+      }
     }
+
     return shuffleArray;
   }
 
@@ -67,7 +82,6 @@ const TestScreen = ({ route, navigation }) => {
     } else {
       copyNotKnowList.push(e.word);
     }
-    console.log('hi', copyNotKnowList);
     setNotKnowList(copyNotKnowList);
   }
 
