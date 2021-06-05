@@ -39,7 +39,7 @@ app.use('/', express.static('uploads')); //이미지 미리보기, express 안�
 
 const mysql = require('mysql2');
 const connection = mysql.createPool({
-  host: 'localhost',
+  host: '192.168.219.106',
   user: 'root',
   password: '1004',
   database: 'mew',

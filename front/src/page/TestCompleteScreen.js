@@ -44,15 +44,17 @@ const TestCompleteScreen = ({ route, navigation }) => {
                   borderRadius: 10,
                   minWidth: 150,
                   maxWidth: 150,
-                  height: 60,
+                  minHeight: 60,
                   borderWidth: 1,
                   marginVertical: 10,
                   marginHorizontal: 5,
-                  backgroundColor: e.notKnow ? 'yellow' : '#ffffff',
+                  // backgroundColor: e.notKnow ? 'yellow' : '#ffffff',
+                  backgroundColor: e.notKnow ? 'yellow' : e.isRight ? 'blue' : '#ffffff',
                 }}
               >
                 <Text style={{ fontWeight: 'bold' }}>{e.word}</Text>
                 <Text style={{ fontWeight: 'bold', color: 'red' }}>{e.answer}</Text>
+                <Text style={{ fontWeight: 'bold', color: 'blue' }}>{e.myAnswer}</Text>
               </TouchableOpacity>
             )
           })

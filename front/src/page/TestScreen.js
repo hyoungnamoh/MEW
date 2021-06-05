@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const TestScreen = ({ route, navigation }) => {
   const [testItems, setTestItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [notKnowList, setNotKnowList] = useState([]);
+  const [usingSimulAnswers, setUsingSimulAnswers] = useState([]);
 
   useEffect(() => {
     const shuffledEngWords = shuffle().map(e => { return { word: e.eng, answer: e.kor } });
@@ -12,10 +13,13 @@ const TestScreen = ({ route, navigation }) => {
     const shuffledWords = [];
     const copyShuffledEngWords = [...shuffledEngWords];
     const copyShuffledKorWords = [...shuffledKorWords];
+    const initailAnswers = [];
     for (let index = 0; index < Math.ceil(shuffledEngWords.length / 10); index++) {
       shuffledWords.push(copyShuffledEngWords.splice(0, 10));
       shuffledWords.push(copyShuffledKorWords.splice(0, 10));
+      initailAnswers.push(['', '', '', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', '', '', ''])
     }
+    setUsingSimulAnswers(initailAnswers);
     setTestItems(shuffledWords);
   }, []);
 
@@ -24,16 +28,11 @@ const TestScreen = ({ route, navigation }) => {
     const propCount = route.params.count;
     const propSelected = route.params.selected;
     const shuffleArray = [];
+
     if (propCount) {
-      // const dayWords = propSelected.map(selected => {
-      //   return propWords.filter(word => {
-      //     return `DAY ${selected + 1}` === word.day;
-      //   })
-      // });
       for (let i = 0; i < propCount; i++) {
         shuffleArray.push(propWords.splice(Math.floor(Math.random() * propWords.length), 1)[0]);
       }
-      console.log(shuffleArray);
     } else {
       while (propWords.length > 0) {
         shuffleArray.push(propWords.splice(Math.floor(Math.random() * propWords.length), 1)[0]);
@@ -60,12 +59,12 @@ const TestScreen = ({ route, navigation }) => {
       );
     });
     if (await AsyncAlert()) {
-      const passValue = testItems.map(e => {
-        return e.map(e2 => {
+      const passValue = testItems.map((e, i) => {
+        return e.map((e2, i2) => {
           if (notKnowList.includes(e2.word)) {
             return { word: e2.word, notKnow: true, answer: e2.answer };
           }
-          return { word: e2.word, answer: e2.answer };
+          return { word: e2.word, answer: e2.answer, isRight: e2.answer === usingSimulAnswers[i][i2], myAnswer: usingSimulAnswers[i][i2] };
         });
       });
       navigation.push('TestCompleteScreen', {
@@ -85,11 +84,20 @@ const TestScreen = ({ route, navigation }) => {
     setNotKnowList(copyNotKnowList);
   }
 
+  const onChangeSumulAnswer = (e, i) => {
+    e.persist();
+    console.log(e.nativeEvent.text);
+    const copySimulAnswers = [...usingSimulAnswers];
+    copySimulAnswers[currentPage - 1][i] = e.nativeEvent.text;
+    setUsingSimulAnswers(copySimulAnswers);
+  }
+
   return (
     <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
       <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
         {
           testItems[currentPage - 1]?.map((e, i) => {
+            console.log(usingSimulAnswers[currentPage - 1][i]);
             return (
               <TouchableOpacity
                 onPress={() => onPressWordButton(e)}
@@ -109,6 +117,15 @@ const TestScreen = ({ route, navigation }) => {
                 }}
               >
                 <Text style={{ fontWeight: 'bold' }}>{e.word}</Text>
+                {
+                  route.params.usingSimul &&
+                  <TextInput
+                    style={{ width: '80%', borderWidth: 1, marginTop: 5 }}
+                    autoCorrect={false}
+                    value={usingSimulAnswers[currentPage - 1][i]}
+                    onChange={(e) => onChangeSumulAnswer(e, i)}
+                  />
+                }
               </TouchableOpacity>
             )
           })
