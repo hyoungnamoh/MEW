@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import SkimmingWordButton from '../../component/SkimmingWordButton';
 
-const TestScreen = ({ route, navigation }) => {
+const SkimmingScreen = ({ route, navigation }) => {
   const [testItems, setTestItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [notKnowList, setNotKnowList] = useState([]);
@@ -25,18 +26,10 @@ const TestScreen = ({ route, navigation }) => {
 
   const shuffle = () => {
     const propWords = [...route.params.data.words];
-    const propCount = route.params.count;
-    const propSelected = route.params.selected;
     const shuffleArray = [];
 
-    if (propCount) {
-      for (let i = 0; i < propCount; i++) {
-        shuffleArray.push(propWords.splice(Math.floor(Math.random() * propWords.length), 1)[0]);
-      }
-    } else {
-      while (propWords.length > 0) {
-        shuffleArray.push(propWords.splice(Math.floor(Math.random() * propWords.length), 1)[0]);
-      }
+    while (propWords.length > 0) {
+      shuffleArray.push(propWords.splice(Math.floor(Math.random() * propWords.length), 1)[0]);
     }
 
     return shuffleArray;
@@ -59,37 +52,8 @@ const TestScreen = ({ route, navigation }) => {
       );
     });
     if (await AsyncAlert()) {
-      const passValue = testItems.map((e, i) => {
-        return e.map((e2, i2) => {
-          if (notKnowList.includes(e2.word)) {
-            return { word: e2.word, notKnow: true, answer: e2.answer };
-          }
-          return { word: e2.word, answer: e2.answer, isRight: e2.answer === usingSimulAnswers[i][i2], myAnswer: usingSimulAnswers[i][i2] };
-        });
-      });
-      navigation.push('TestCompleteScreen', {
-        words: passValue,
-      })
+      navigation.push('MainScreen');
     }
-  }
-
-  const onPressWordButton = (e) => {
-    const copyNotKnowList = [...notKnowList];
-    if (copyNotKnowList.find(item => item === e.word)) {
-      const findIndex = copyNotKnowList.findIndex(item => item === e);
-      copyNotKnowList.splice(findIndex, 1);
-    } else {
-      copyNotKnowList.push(e.word);
-    }
-    setNotKnowList(copyNotKnowList);
-  }
-
-  const onChangeSumulAnswer = (e, i) => {
-    e.persist();
-    console.log(e.nativeEvent.text);
-    const copySimulAnswers = [...usingSimulAnswers];
-    copySimulAnswers[currentPage - 1][i] = e.nativeEvent.text;
-    setUsingSimulAnswers(copySimulAnswers);
   }
 
   return (
@@ -98,34 +62,7 @@ const TestScreen = ({ route, navigation }) => {
         {
           testItems[currentPage - 1]?.map((e, i) => {
             return (
-              <TouchableOpacity
-                onPress={() => onPressWordButton(e)}
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderColor: 'black',
-                  borderRadius: 10,
-                  minWidth: 150,
-                  maxWidth: 150,
-                  height: 60,
-                  borderWidth: 1,
-                  marginVertical: 10,
-                  marginHorizontal: 5,
-                  backgroundColor: notKnowList.find(item => item === e.word) ? 'yellow' : '#ffffff',
-                }}
-              >
-                <Text style={{ fontWeight: 'bold' }}>{e.word}</Text>
-                {
-                  route.params.usingSimul &&
-                  <TextInput
-                    style={{ width: '80%', borderWidth: 1, marginTop: 5 }}
-                    autoCorrect={false}
-                    value={usingSimulAnswers[currentPage - 1][i]}
-                    onChange={(e) => onChangeSumulAnswer(e, i)}
-                  />
-                }
-              </TouchableOpacity>
+              <SkimmingWordButton item={e} />
             )
           })
         }
@@ -204,4 +141,4 @@ const TestScreen = ({ route, navigation }) => {
   )
 }
 
-export default TestScreen;
+export default SkimmingScreen;

@@ -38,6 +38,7 @@ import MainScreen from './src/page/MainScreen';
 import TestScreen from './src/page/TestScreen';
 import TestCompleteScreen from './src/page/TestCompleteScreen';
 import SelectQuestionsCountScreen from './src/page/SelectQuestionsCountScreen';
+import SkimmingScreen from './src/page/SkimmingScreen';
 
 
 // In App.js in a new project
@@ -143,6 +144,10 @@ const App = () => {
           <Stack.Screen
             name="TestCompleteScreen"
             component={TestCompleteScreen}
+          />
+          <Stack.Screen
+            name="SkimmingScreen"
+            component={SkimmingScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

@@ -6,16 +6,25 @@ const SelectQuestionsCountScreen = ({ route, navigation }) => {
   useEffect(() => {
   })
   const onPressStart = (count) => {
-    if (count > route.params.data.words.length) {
+    if (count === 82) {
+      navigation.push('SkimmingScreen', {
+        data: route.params.data,
+        count,
+        selected: route.params.selected,
+      });
+    }
+    if (count > route.params.data.words.length && count !== 82) {
       Alert.alert('문항수가 부족해요. 문제를 더 추가해줘요..;');
       return;
     }
-    navigation.push('TestScreen', {
-      data: route.params.data,
-      count,
-      selected: route.params.selected,
-      usingSimul: usingSimul,
-    });
+    if (count !== 82) {
+      navigation.push('TestScreen', {
+        data: route.params.data,
+        count,
+        selected: route.params.selected,
+        usingSimul: usingSimul,
+      });
+    }
   }
 
   const onPressUsingSimul = () => {
@@ -71,6 +80,22 @@ const SelectQuestionsCountScreen = ({ route, navigation }) => {
           onPress={() => { onPressStart(100) }}
         >
           <Text>100문항</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderColor: 'black',
+            borderRadius: 10,
+            height: 60,
+            borderWidth: 1,
+            marginVertical: 10,
+            marginHorizontal: 5,
+          }}
+          onPress={() => { onPressStart(82) }}
+        >
+          <Text>Skimming</Text>
         </TouchableOpacity>
       </View>
       <View style={{ flexDirection: 'row', marginTop: 30, alignItems: 'center', marginLeft: 10 }}>
