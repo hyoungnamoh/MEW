@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
-const SkimmingWordButton = ({ item }) => {
-  const [skimmed, setSkimmed] = useState(false);
+const SkimmingWordButton = ({ item, skimed, skimedList, setSkimedList }) => {
 
   const onPressWordButton = () => {
-    setSkimmed(true);
+    skimedList.push(item.word);
+    setSkimedList([...skimedList]);
   }
 
   return (
@@ -27,7 +27,7 @@ const SkimmingWordButton = ({ item }) => {
       }}
     >
       <Text style={{ fontWeight: 'bold' }}>{item.word}</Text>
-      {skimmed && <Text style={{ fontWeight: 'bold', color: 'red' }}>{item.answer}</Text>}
+      {skimed && <Text style={{ fontWeight: 'bold', color: 'red' }}>{item.answer}</Text>}
     </TouchableOpacity>
   )
 }

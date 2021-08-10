@@ -5,8 +5,7 @@ import SkimmingWordButton from '../../component/SkimmingWordButton';
 const SkimmingScreen = ({ route, navigation }) => {
   const [testItems, setTestItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [notKnowList, setNotKnowList] = useState([]);
-  const [usingSimulAnswers, setUsingSimulAnswers] = useState([]);
+  const [skimedList, setSkimedList] = useState([]);
 
   useEffect(() => {
     const shuffledEngWords = shuffle().map(e => { return { word: e.eng, answer: e.kor } });
@@ -14,13 +13,10 @@ const SkimmingScreen = ({ route, navigation }) => {
     const shuffledWords = [];
     const copyShuffledEngWords = [...shuffledEngWords];
     const copyShuffledKorWords = [...shuffledKorWords];
-    const initailAnswers = [];
     for (let index = 0; index < Math.ceil(shuffledEngWords.length / 10); index++) {
       shuffledWords.push(copyShuffledEngWords.splice(0, 10));
       shuffledWords.push(copyShuffledKorWords.splice(0, 10));
-      initailAnswers.push(['', '', '', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', '', '', ''])
     }
-    setUsingSimulAnswers(initailAnswers);
     setTestItems(shuffledWords);
   }, []);
 
@@ -61,8 +57,9 @@ const SkimmingScreen = ({ route, navigation }) => {
       <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
         {
           testItems[currentPage - 1]?.map((e, i) => {
+            console.log('hi', e);
             return (
-              <SkimmingWordButton item={e} />
+              <SkimmingWordButton item={e} skimedList={skimedList} setSkimedList={setSkimedList} skimed={skimedList.includes(e.word)} />
             )
           })
         }

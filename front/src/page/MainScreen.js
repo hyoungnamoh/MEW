@@ -60,8 +60,8 @@ const MainScreen = ({ route, navigation }) => {
   const getWords = async (selected) => {
     try {
       //local 바뀔 때 변경
-      const response = await axios.get('http://192.168.219.100:3603/words', {
-      // const response = await axios.get('http://localhost:3603/words', {
+      // const response = await axios.get('http://192.168.219.100:3603/words', {
+      const response = await axios.get('http://localhost:3603/words', {
         params: {
           selected: selected,
         },
