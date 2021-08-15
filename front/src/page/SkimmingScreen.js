@@ -12,10 +12,10 @@ const SkimmingScreen = ({ route, navigation }) => {
     const shuffledKorWords = shuffle().map(e => { return { word: e.kor, answer: e.eng } });
     const shuffledWords = [];
     const copyShuffledEngWords = [...shuffledEngWords];
-    const copyShuffledKorWords = [...shuffledKorWords];
+    // const copyShuffledKorWords = [...shuffledKorWords];
     for (let index = 0; index < Math.ceil(shuffledEngWords.length / 10); index++) {
       shuffledWords.push(copyShuffledEngWords.splice(0, 10));
-      shuffledWords.push(copyShuffledKorWords.splice(0, 10));
+      // shuffledWords.push(copyShuffledKorWords.splice(0, 10));
     }
     setTestItems(shuffledWords);
   }, []);
